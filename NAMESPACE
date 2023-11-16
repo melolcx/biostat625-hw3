@@ -1,1 +1,5 @@
-exportPattern("^[[:alpha:]]+")
+export(LR)
+importFrom("stats", "as.formula", "model.matrix", "na.omit", "pf",
+           "pt", "qt")
+importFrom("utils", "capture.output")
+import("ISLR")

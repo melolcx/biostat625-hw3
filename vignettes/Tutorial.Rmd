@@ -1,0 +1,44 @@
+---
+title: "LR tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+To use the function 'LR':
+
+```{r setup}
+library(LR)
+library(ISLR)
+```
+
+```{r}
+LR(swiss,c("Fertility", "Agriculture", "Examination", "Education") ,"Infant.Mortality")
+```
+
+To use the function "summary" and "lm":
+
+```{r}
+model_swiss <- lm(Infant.Mortality ~ Fertility + Agriculture + Examination + Education, data = swiss)
+summary(model_swiss)
+```
+
+To find the difference of time using LR package and "summary" and "lm
+
+```{r}
+
+system.time(summary(lm(mpg ~ cylinders + displacement + horsepower + weight + acceleration +
+                         year + origin, data = Auto)))
+
+system.time(LR(Auto, c("cylinders", "displacement", "horsepower", "weight", "acceleration", "year", "origin"),
+               "mpg"))
+```
