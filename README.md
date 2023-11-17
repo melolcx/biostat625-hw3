@@ -16,6 +16,13 @@ Y = Beta_0 + Beta_1 * X_1 + Beta_2 * X_2 + ... + Beta_n * X_n + r
 
 ## Installation
 The package can be installed to R environment with devtools::install.github()
+```r
+# install using devtools from GitHub:
+devtools::install_github("melolcx/biostat625-hw3")
+
+# browse vignitte, install with:
+devtools::install_github("melolcx/biostat624-hw3", build_vignettes = T)
+```
 
 ## Functions
 The function LR() need 3 inputs: "data, "x" and "y". "data" is the aimed data that you want to fit a linear regression model, "x" is the independent variables that you are interested in and y is for dependent variable. The number of x is not limited while the number of y is limited to 1.
