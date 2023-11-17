@@ -50,6 +50,8 @@ LR <- function(data, x, y) {
   # residual
   residual <- as.vector(y_matrix - x_matrix %*% beta_hat)
   residual_square <- residual^2
+  residual_summary <- data.frame("Min." = min(residual), "1st Qu." = quantile(residual)[[2]], "Median" = quantile(residual)[[3]],
+                                 "3Q" = quantile(residual)[[4]], "Max" = quantile(residual)[[5]], check.names = FALSE)
 
   # F-stat and p_value
   n <- nrow(data)
@@ -59,28 +61,28 @@ LR <- function(data, x, y) {
   F_stat <- (SSR/(p-1)) / (SSE/(n-p))
   df_1 <- p - 1
   df_2 <- n - p
-  p_value <- pf(F_stat, p-1, n-p, lower.tail = FALSE)
+  p_value_F <- pf(F_stat, p-1, n-p, lower.tail = FALSE)
 
   # R-squared
   Multiple_R_Squared <- 1 - (SSE/(SSR + SSE))
   Adjusted_R_Squared <- 1 - (SSE/(n-p)) / ((SSE + SSR)/(n-1))
 
   # std_error
-  var_betahat <- diag(SSE/(n-p), p, p) %*% solve(t(x_matrix) %*% x_matrix)
+  var_betahat <- SSE/(n-p) * solve(t(x_matrix) %*% x_matrix)
   std_error <- sqrt(diag(var_betahat))
 
   # t_score
   t_score <- beta_hat / std_error
-  p_value_t <- 2 * pt(t_score, n-p, lower.tail = FALSE)
+  p_value_t <- 2 * pt(abs(t_score), n-p, lower.tail = FALSE)
 
   # Coefficients
-  list_coefficients <- data.frame("Estimate" = as.vector(beta_hat), "Std.Error" = std_error,
+  list_coefficients <- data.frame("Estimate" = as.vector(beta_hat), "Std. Error" = std_error,
                                   "t value" = as.vector(t_score), "Pr(>|t|)" = as.vector(p_value_t),
                                   row.names = as.vector(colnames(x_matrix)), check.names = FALSE)
 
   # Confidence Interval
   t <- qt(0.975 , df = n-p)
-  CI_95 <- data.frame("2.5%" = as.vector(beta_hat - t * std_error), "97.5%" = as.vector(beta_hat + t * std_error),
+  CI_95 <- data.frame("2.5 %" = as.vector(beta_hat - t * std_error), "97.5 %" = as.vector(beta_hat + t * std_error),
                       row.names = as.vector(colnames(x_matrix)), check.names = FALSE)
 
   # output capture
@@ -92,7 +94,7 @@ LR <- function(data, x, y) {
 
     ## output residuals stat
     cat("\n\nResiduals:\n")
-    print(summary(residual))
+    print(residual_summary, row.names = FALSE)
 
     ## output coefficients
     cat("\nCoefficients:\n" )
@@ -108,10 +110,11 @@ LR <- function(data, x, y) {
     cat("Multiple R-squared: ", Multiple_R_Squared,", ", "Adjusted R-squared: ", Adjusted_R_Squared, "\n" )
 
     ## output F stat
-    cat("F-statistic: ", F_stat, " on ", df_1, " and ", df_2, " DF,", "p-value: ", p_value, "\n")
+    cat("F-statistic: ", F_stat, " on ", df_1, " and ", df_2, " DF,", "p-value: ", p_value_F, "\n")
   })
 
-  output <- cat(paste(output, collapse = "\n"))
-  return(output)
+  output <- paste(c(output), collapse = "\n")
+  return(list(residuals = residual_summary, coefficients = list_coefficients, CI_95 = CI_95, MRS = Multiple_R_Squared,
+              ARS = Adjusted_R_Squared, F_statistic = F_stat, p_value_F = p_value_F, output = output))
 }
 
