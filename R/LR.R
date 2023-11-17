@@ -113,9 +113,9 @@ LR <- function(data, x, y) {
     cat("F-statistic: ", F_stat, " on ", df_1, " and ", df_2, " DF,", "p-value: ", p_value_F, "\n")
   })
 
-  cat(paste(c(output), collapse = "\n"))
   cat("\n---\n\n")
-  return(list(residuals = residual_summary, coefficients = list_coefficients, CI_95 = CI_95, MRS = Multiple_R_Squared,
-              ARS = Adjusted_R_Squared, F_statistic = F_stat, p_value_F = p_value_F))
+  return(list(residuals = residual_summary, coefficients = list_coefficients, CI_95 = CI_95, MRS = Multiple_R_Squared[[1]],
+              ARS = Adjusted_R_Squared[[1]], F_statistic = F_stat[[1]], p_value_F = p_value_F[[1]], general = paste(output, sep = "\
+              n")))
 
 }

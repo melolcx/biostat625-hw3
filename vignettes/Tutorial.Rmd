@@ -25,20 +25,78 @@ library(ISLR)
 LR(swiss,c("Fertility", "Agriculture", "Examination", "Education") ,"Infant.Mortality")
 ```
 
-To use the function "summary" and "lm":
+To use the function "LR":with LR(data,x,y), using data "Auto" from package "ISLR"
 
 ```{r}
-model_swiss <- lm(Infant.Mortality ~ Fertility + Agriculture + Examination + Education, data = swiss)
-summary(model_swiss)
+data <- Auto
+x <- c("cylinders", "displacement", "horsepower", "weight", "acceleration", "year", "origin")
+y <- "mpg"
 ```
 
-To find the difference of time using LR package and "summary" and "lm
+
+The output of LR includes the general output and divided output, if you only need a part of the output, use"$"
+
+If you need residuals:
 
 ```{r}
+residuals <- LR(Auto, x, y)$residuals
+print(residuals)
+```
 
+If you need coefficients sheet with standard error, t-value and p-value :
+
+```{r}
+coefficients <- LR(Auto, x, y)$coefficients
+print(coefficients)
+```
+
+If you need 95% confidence intervals, you do not need "confint()" function for the model as it is contained in this LR function:
+
+```{r}
+CI_95 <- LR(Auto, x, y)$CI_95
+print(CI_95)
+```
+
+If you need Multiple R-squared:
+
+```{r}
+MRS <- LR(Auto, x, y)$MRS
+print(MRS)
+```
+
+If you need Adjusted R-squared:
+
+```{r}
+ARS <- LR(Auto, x, y)$ARS
+print(ARS)
+```
+
+If you need F-statistic:
+
+```{r}
+F_statistic <- LR(data, x, y)$F_statistic
+print(F_statistic)
+```
+
+If you need p-value for F-statistic:
+
+```{r}
+p_value_F <- LR(data, x, y)$p_value_F
+print(p_value_F)
+```
+
+If you need a general output:
+```{r}
+general <- LR(data, x, y)$general
+cat(paste(general, collapse = "\n"))
+```
+
+
+Time that will cost:
+```{r}
 system.time(summary(lm(mpg ~ cylinders + displacement + horsepower + weight + acceleration +
                          year + origin, data = Auto)))
 
-system.time(LR(Auto, c("cylinders", "displacement", "horsepower", "weight", "acceleration", "year", "origin"),
-               "mpg"))
+system.time(LR(Auto,x,y))
 ```
+
