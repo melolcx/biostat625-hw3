@@ -21,9 +21,6 @@ library(LR)
 library(ISLR)
 ```
 
-```{r}
-LR(swiss,c("Fertility", "Agriculture", "Examination", "Education") ,"Infant.Mortality")
-```
 
 To use the function "LR":with LR(data,x,y), using data "Auto" from package "ISLR"
 
