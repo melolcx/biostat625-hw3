@@ -1,4 +1,4 @@
-#'Linear regression
+#'Linear Regression Summary
 #'
 #'Gets the Linear regression model and some summary result of aimed data
 #'
@@ -113,8 +113,9 @@ LR <- function(data, x, y) {
     cat("F-statistic: ", F_stat, " on ", df_1, " and ", df_2, " DF,", "p-value: ", p_value_F, "\n")
   })
 
-  output <- paste(c(output), collapse = "\n")
+  cat(paste(c(output), collapse = "\n"))
+  cat("\n---\n\n")
   return(list(residuals = residual_summary, coefficients = list_coefficients, CI_95 = CI_95, MRS = Multiple_R_Squared,
-              ARS = Adjusted_R_Squared, F_statistic = F_stat, p_value_F = p_value_F, output = output))
-}
+              ARS = Adjusted_R_Squared, F_statistic = F_stat, p_value_F = p_value_F))
 
+}
