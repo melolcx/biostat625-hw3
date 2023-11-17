@@ -32,7 +32,7 @@ Using this function, there will be a general output for a sheet of statistics wi
 At the same time, each type of output will be divided with a list so that it will be easier to directly use them with "[]".
 
 ## Usage
-```r
+```
 library(LR)
 library(datasets)
 data(swiss)
