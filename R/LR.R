@@ -1,6 +1,6 @@
 #'Linear Regression Summary
 #'
-#'Get the Linear regression model's summary results of aimed data
+#'Get the Linear regression model summary results of aimed data
 #'
 #'@param data a data.frame that needed to fit linear regression model and summary
 #'

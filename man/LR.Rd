@@ -21,7 +21,7 @@ This function is used to arrange some outputs of summary results of linear regre
 and reduces some outputs that is seldom used for rookies. It is user friendly and you will understand that in examples and tutorial.
 }
 \details{
-Get the Linear regression model's summary results of aimed data
+Get the Linear regression model summary results of aimed data
 }
 \examples{
 library(datasets)
