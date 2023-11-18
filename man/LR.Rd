@@ -7,17 +7,21 @@
 LR(data, x, y)
 }
 \arguments{
-\item{data}{input aimed data that need to fit linear regression model}
+\item{data}{a data.frame that needed to fit linear regression model and summary}
 
-\item{x}{the list of names of independent variables}
+\item{x}{a vector of names of independent variables}
 
-\item{y}{name of dependent variable}
+\item{y}{a vector of name of dependent variable}
 }
 \value{
-the statistics of linear regression
+the summary of linear regression
 }
 \description{
-Gets the Linear regression model and some summary result of aimed data
+This function is used to arrange some outputs of summary results of linear regression model. It contains more useful outputs
+and reduces some outputs that is seldom used for rookies. It is user friendly and you will understand that in examples and tutorial.
+}
+\details{
+Get the Linear regression model's summary results of aimed data
 }
 \examples{
 library(datasets)

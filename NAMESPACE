@@ -4,3 +4,4 @@ importFrom("stats", "as.formula", "model.matrix", "na.omit", "pf",
 importFrom("utils", "capture.output")
 import("ISLR")
 importFrom("stats", "quantile")
+import("bench")

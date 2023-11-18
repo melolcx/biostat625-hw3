@@ -15,5 +15,6 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Imports: 
-         ISLR
+         ISLR,
+         bench
 Config/testthat/edition: 3

@@ -1,14 +1,19 @@
 #'Linear Regression Summary
 #'
-#'Gets the Linear regression model and some summary result of aimed data
+#'Get the Linear regression model's summary results of aimed data
 #'
-#'@param data input aimed data that need to fit linear regression model
+#'@param data a data.frame that needed to fit linear regression model and summary
 #'
-#'@param x the list of names of independent variables
+#'@param x a vector of names of independent variables
 #'
-#'@param y name of dependent variable
+#'@param y a vector of name of dependent variable
 #'
-#'@return the statistics of linear regression
+#'@return the summary of linear regression
+#'
+#'@description
+#'This function is used to arrange some outputs of summary results of linear regression model. It contains more useful outputs
+#'and reduces some outputs that is seldom used for rookies. It is user friendly and you will understand that in examples and tutorial.
+#'
 #'
 #'@examples
 #'library(datasets)
@@ -32,7 +37,7 @@ LR <- function(data, x, y) {
   y_data <- subset(data, select = y)
   x_data <- subset(data, select = x)
 
-  # beta
+  # beta_hat
   x_matrix <- model.matrix(as.formula(paste("~", paste(colnames(x_data), collapse = "+")))
                            , data = data)
   y_matrix <- as.matrix(y_data)
@@ -45,7 +50,6 @@ LR <- function(data, x, y) {
 
   formula_LR <- paste(c(y_names, paste(x_names, collapse = " + ")), collapse = " ~ ")
 
-  p <- ncol(x_matrix)
 
   # residual
   residual <- as.vector(y_matrix - x_matrix %*% beta_hat)
@@ -53,8 +57,9 @@ LR <- function(data, x, y) {
   residual_summary <- data.frame("Min." = min(residual), "1st Qu." = quantile(residual)[[2]], "Median" = quantile(residual)[[3]],
                                  "3Q" = quantile(residual)[[4]], "Max" = quantile(residual)[[5]], check.names = FALSE)
 
-  # F-stat and p_value
+  # F-stat and p_value_F
   n <- nrow(data)
+  p <- ncol(x_matrix)
   SSE <- sum(residual_square)
   SSR <- t(y_matrix) %*% ((x_matrix %*% solve(t(x_matrix) %*% x_matrix) %*% t(x_matrix))
                           - matrix(1/n, n, n)) %*% y_matrix
@@ -75,12 +80,12 @@ LR <- function(data, x, y) {
   t_score <- beta_hat / std_error
   p_value_t <- 2 * pt(abs(t_score), n-p, lower.tail = FALSE)
 
-  # Coefficients
+  # coefficients
   list_coefficients <- data.frame("Estimate" = as.vector(beta_hat), "Std. Error" = std_error,
                                   "t value" = as.vector(t_score), "Pr(>|t|)" = as.vector(p_value_t),
                                   row.names = as.vector(colnames(x_matrix)), check.names = FALSE)
 
-  # Confidence Interval
+  # confidence Intervals
   t <- qt(0.975 , df = n-p)
   CI_95 <- data.frame("2.5 %" = as.vector(beta_hat - t * std_error), "97.5 %" = as.vector(beta_hat + t * std_error),
                       row.names = as.vector(colnames(x_matrix)), check.names = FALSE)
@@ -114,7 +119,6 @@ LR <- function(data, x, y) {
   })
 
   return(list(residuals = residual_summary, coefficients = list_coefficients, CI_95 = CI_95, MRS = Multiple_R_Squared[[1]],
-              ARS = Adjusted_R_Squared[[1]], F_statistic = F_stat[[1]], p_value_F = p_value_F[[1]], general = paste(output, sep = "\
-              n")))
+              ARS = Adjusted_R_Squared[[1]], F_statistic = F_stat[[1]], p_value_F = p_value_F[[1]], general = paste(output, sep = "\n")))
 
 }

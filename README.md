@@ -20,7 +20,7 @@ The package can be installed to R environment with devtools::install.github()
 # install using devtools from GitHub:
 devtools::install_github("melolcx/biostat625-hw3")
 
-# browse vignitte, install with:
+# build vignitte, install with:
 devtools::install_github("melolcx/biostat624-hw3", build_vignettes = T)
 ```
 

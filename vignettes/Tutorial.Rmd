@@ -19,6 +19,7 @@ To use the function 'LR':
 ```{r setup}
 library(LR)
 library(ISLR)
+library(bench)
 ```
 
 
@@ -30,6 +31,14 @@ x <- c("cylinders", "displacement", "horsepower", "weight", "acceleration", "yea
 y <- "mpg"
 ```
 
+Original function:
+```{r}
+model <- lm(mpg~cylinders + displacement + horsepower + weight + acceleration + year + origin, data = Auto)
+summary <- summary(model)
+
+pf <- pf(summary(model)$fstatistic[[1]], summary(model)$fstatistic[[2]], summary(model)$fstatistic[[3]], lower.tail = FALSE)
+```
+
 
 The output of LR includes the general output and divided output, if you only need a part of the output, use"$"
 
@@ -38,6 +47,7 @@ If you need residuals:
 ```{r}
 residuals <- LR(Auto, x, y)$residuals
 print(residuals)
+
 ```
 
 If you need coefficients sheet with standard error, t-value and p-value :
@@ -45,6 +55,8 @@ If you need coefficients sheet with standard error, t-value and p-value :
 ```{r}
 coefficients <- LR(Auto, x, y)$coefficients
 print(coefficients)
+
+all.equal(as.matrix(coefficients), summary$coefficients)
 ```
 
 If you need 95% confidence intervals, you do not need "confint()" function for the model as it is contained in this LR function:
@@ -52,6 +64,8 @@ If you need 95% confidence intervals, you do not need "confint()" function for t
 ```{r}
 CI_95 <- LR(Auto, x, y)$CI_95
 print(CI_95)
+
+all.equal(as.matrix(CI_95), confint(model))
 ```
 
 If you need Multiple R-squared:
@@ -59,6 +73,8 @@ If you need Multiple R-squared:
 ```{r}
 MRS <- LR(Auto, x, y)$MRS
 print(MRS)
+
+all.equal(MRS, summary$r.squared)
 ```
 
 If you need Adjusted R-squared:
@@ -66,6 +82,8 @@ If you need Adjusted R-squared:
 ```{r}
 ARS <- LR(Auto, x, y)$ARS
 print(ARS)
+
+all.equal(ARS, summary$adj.r.squared)
 ```
 
 If you need F-statistic:
@@ -73,6 +91,8 @@ If you need F-statistic:
 ```{r}
 F_statistic <- LR(data, x, y)$F_statistic
 print(F_statistic)
+
+all.equal(F_statistic, summary$fstatistic[[1]])
 ```
 
 If you need p-value for F-statistic:
@@ -80,6 +100,8 @@ If you need p-value for F-statistic:
 ```{r}
 p_value_F <- LR(data, x, y)$p_value_F
 print(p_value_F)
+
+all.equal(p_value_F, pf)
 ```
 
 If you need a general output:
@@ -97,3 +119,9 @@ system.time(summary(lm(mpg ~ cylinders + displacement + horsepower + weight + ac
 system.time(LR(Auto,x,y))
 ```
 
+efficiency:
+
+```{r}
+bench::mark(LR(data, x ,y))
+bench::mark(summary(model))
+```
